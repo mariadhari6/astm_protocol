@@ -1,0 +1,105 @@
+[
+  {
+    "Header": {
+      "Sender name or ID": {
+        "Analyzer name": "CN-6000",
+        "Software version": "00-30",
+        "Analyzer serial No": "A2901",
+        "Nickname": "CN-6000",
+        "PS code": "CV339763"
+      },
+      "ASTM Version No.": "E1394-97"
+    },
+    "Patient": {
+      "Practice assigned Patient ID": "35034",
+      "Patient name": {
+        "First name": "ABDUL",
+        "Last name": "HAMID"
+      }
+    },
+    "Order": {
+      "Instrument Speciment ID": {
+        "Rack No.": "000002",
+        "Tube Position": "01",
+        "Sample ID No.": "2509230077170",
+        "Sample ID No. attribute": "M"
+      },
+      "Priority": "R",
+      "Action code": "Q"
+    },
+    "Result": [
+      {
+        "Universal Test ID": {
+          "Test code": "041",
+          "Parameter": "PT sec",
+          "Dilution ratio": "100.00",
+          "Analysis result type": "9"
+        },
+        "Value": "11.3",
+        "Units": "sec",
+        "Abnormal flags": {
+          "Result abnormal flags": "N"
+        },
+        "Date/Time test completed": "20250923002729"
+      },
+      {
+        "Universal Test ID": {
+          "Test code": "044",
+          "Parameter": "PT INR",
+          "Dilution ratio": "100.00",
+          "Analysis result type": "9"
+        },
+        "Value": "1.05",
+        "Abnormal flags": {
+          "Result abnormal flags": "N"
+        },
+        "Date/Time test completed": "20250923002729"
+      },
+      {
+        "Universal Test ID": {
+          "Test code": "051",
+          "Parameter": "APTT sec",
+          "Dilution ratio": "100.00",
+          "Analysis result type": "9"
+        },
+        "Value": "32.8",
+        "Units": "sec",
+        "Abnormal flags": {
+          "Result abnormal flags": "N"
+        },
+        "Date/Time test completed": "20250923002729"
+      },
+      {
+        "Universal Test ID": {
+          "Test code": "061",
+          "Parameter": "Fbg sec",
+          "Dilution ratio": "100.00",
+          "Analysis result type": "9"
+        },
+        "Value": "6.3",
+        "Units": "sec",
+        "Abnormal flags": {
+          "Result abnormal flags": "N"
+        },
+        "Date/Time test completed": "20250923002729"
+      },
+      {
+        "Universal Test ID": {
+          "Test code": "062",
+          "Parameter": "Fbg C.",
+          "Dilution ratio": "100.00",
+          "Analysis result type": "9"
+        },
+        "Value": "250.2",
+        "Units": "mg/dL",
+        "Abnormal flags": {
+          "Result abnormal flags": "N"
+        },
+        "Date/Time test completed": "20250923002729"
+      }
+    ],
+    "Termination": {
+      "Termination cord": "N"
+    }
+  }
+]
