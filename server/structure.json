@@ -1,0 +1,322 @@
+{
+  "Header": {
+    "code": "H",
+    "fields": [
+      {
+        "Record type": "H"
+      },
+      {
+        "Delimiter definition": "¥^&"
+      },
+      {
+        "Message control ID": ""
+      },
+      {
+        "Access password": ""
+      },
+      {
+        "Sender name or ID": [
+          {
+            "Analyzer name": ""
+          },
+          {
+            "Software version": ""
+          },
+          {
+            "Analyzer serial No": ""
+          },
+          {
+            "Interface version": ""
+          },
+          {
+            "Logical ID number": ""
+          },
+          {
+            "Nickname": ""
+          },
+          {
+            "PS code": ""
+          }
+        ]
+      },
+      {
+        "Sender street address": ""
+      },
+      {
+        "Reserved field": ""
+      },
+      {
+        "Sender Telephone No.": ""
+      },
+      {
+        "Sender characteristics": ""
+      },
+      {
+        "Receiver ID": ""
+      },
+      {
+        "Comment": ""
+      },
+      {
+        "Processing ID": ""
+      },
+      {
+        "ASTM Version No.": ""
+      },
+      {
+        "Date and Time of message": ""
+      }
+    ]
+  },
+  "Patient": {
+    "code": "P",
+    "fields": [
+      {
+        "Record type": "P"
+      },
+      {
+        "Sequence No.": ""
+      },
+      {
+        "Practice assigned Patient ID": ""
+      },
+      {
+        "Laboratory assigned patient ID": ""
+      },
+      {
+        "Patient ID No.": ""
+      },
+      {
+        "Patient name": [
+          {
+            "[NONE]": ""
+          },
+          {
+            "First name": ""
+          },
+          {
+            "Last name": ""
+          }
+        ]
+      },
+      {
+        "Mother's maiden name": ""
+      },
+      {
+        "Birth date": ""
+      },
+      {
+        "Patient sex": ""
+      }
+    ]
+  },
+  "Order": {
+    "code": "O",
+    "fields": [
+      {
+        "Record type": "O"
+      },
+      {
+        "Sequence No.": ""
+      },
+      {
+        "Specimen ID": [
+          {
+            "Rack No.": ""
+          },
+          {
+            "Tube Position": ""
+          },
+          {
+            "Sample ID No.": ""
+          },
+          {
+            "Sample ID No. attribute": ""
+          },
+          {
+            "[NONE]": ""
+          },
+          {
+            "Measurement Mode": ""
+          }
+        ]
+      },
+      {
+        "Instrument Speciment ID": [
+          {
+            "Rack No.": ""
+          },
+          {
+            "Tube Position": ""
+          },
+          {
+            "Sample ID No.": ""
+          },
+          {
+            "Sample ID No. attribute": ""
+          },
+          {
+            "Extended order request flag": ""
+          },
+          {
+            "Measurement Mode": ""
+          },
+          {
+            "Sample seq.": ""
+          }
+        ]
+      },
+      {
+        "Universal Test ID": [
+          {
+            "[NONE]": ""
+          },
+          {
+            "[NONE]": ""
+          },
+          {
+            "Test code": ""
+          },
+          {
+            "[NONE]": ""
+          },
+          {
+            "Dilution ratio": ""
+          },
+          {
+            "Option": ""
+          },
+          {
+            "Replication": ""
+          },
+          {
+            "Measurement Time": ""
+          }
+        ]
+      },
+      {
+        "Priority": ""
+      },
+      {
+        "Requested/order date and time": ""
+      },
+      {
+        "[NONE]": ""
+      },
+      {
+        "[NONE]": ""
+      },
+      {
+        "[NONE]": ""
+      },
+      {
+        "[NONE]": ""
+      },
+      {
+        "Action code": ""
+      }
+    ]
+  },
+  "Result": {
+    "code": "R",
+    "fields": [
+      {
+        "Record type": "R"
+      },
+      {
+        "Sequence No.": ""
+      },
+      {
+        "Universal Test ID": [
+          {
+            "[NONE]": ""
+          },
+          {
+            "[NONE]": ""
+          },
+          {
+            "Test code": ""
+          },
+          {
+            "Parameter": ""
+          },
+          {
+            "Dilution ratio": ""
+          },
+          {
+            "Analysis result type": ""
+          },
+          {
+            "Extended order request": ""
+          },
+          {
+            "Extended order result": ""
+          },
+          {
+            "Reflex test request": ""
+          },
+          {
+            "Replication": ""
+          }
+        ]
+      },
+      {
+        "Value": ""
+      },
+      {
+        "Units": ""
+      },
+      {
+        "Reference ranges": ""
+      },
+      {
+        "Abnormal flags": [
+          {
+            "Result abnormal flags": ""
+          },
+          {
+            "Evaluation Information": ""
+          },
+          {
+            "Instrument Error Information": ""
+          }
+        ]
+      },
+      {
+        "Nature of abnormality testing": ""
+      },
+      {
+        "Result status": ""
+      },
+      {
+        "Date of change in instrument normative values": ""
+      },
+      {
+        "Operator identification": ""
+      },
+      {
+        "Date/Time test started": ""
+      },
+      {
+        "Date/Time test completed": ""
+      },
+      {
+        "Instrument identification": ""
+      }
+    ]
+  },
+  "Termination": {
+    "code": "L",
+    "fields": [
+      {
+        "Record type": "L"
+      },
+      {
+        "Sequence No.": ""
+      },
+      {
+        "Termination cord": "N"
+      }
+    ]
+  }
+}

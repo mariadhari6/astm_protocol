@@ -4,6 +4,9 @@ using System.IO.Ports;
 using DotNetEnv;
 using System.Collections.Generic;
 using Serilog;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Sprache;
 
 public class Program
 {
@@ -18,6 +21,12 @@ public class Program
   private static readonly byte NAK = 21;
   private static readonly int MAX_SEQUENCE = 7;
   private static int nextSequence = 1;
+
+  private static JArray? HeaderStructure;
+  private static JArray? PatientStructure;
+  private static JArray? OrderStructure;
+  private static JArray? ResultStructure;
+  private static JArray? TerminationStructure;
 
   // Buffer untuk menampung data paket
   private static readonly List<byte> packetBuffer = new List<byte>();
@@ -35,10 +44,39 @@ public class Program
     .WriteTo.File("logs/myapp-.txt", rollingInterval: RollingInterval.Day) // Log to a daily rotating file
     .CreateLogger();
 
+    // Load Structure
+    Log.Information("Load Structure From JSON File...");
+    string structureString = File.ReadAllText("structure.json");
+    dynamic? structure = null;
+
+    if (!string.IsNullOrEmpty(structureString))
+    {
+      structure = JsonConvert.DeserializeObject<dynamic>(structureString);
+    }
+
+    if (structure == null)
+    {
+      Log.Error("Failed to load structure file...");
+      return;
+    }
+    HeaderStructure = (JArray)structure["Header"]["fields"];
+    PatientStructure = (JArray)structure["Patient"]["fields"];
+    OrderStructure = (JArray)structure["Order"]["fields"];
+    ResultStructure = (JArray)structure["Result"]["fields"];
+    TerminationStructure = (JArray)structure["Termination"]["fields"];
+
+    if (HeaderStructure == null || PatientStructure == null || OrderStructure == null || ResultStructure == null || TerminationStructure == null)
+    {
+      Log.Error("Failed to Parse Structure");
+      return;
+    }
+
+    Log.Information("Load .env");
     Env.Load();
     string portName = Environment.GetEnvironmentVariable("SERIAL_PORT") ?? "/dev/pts/2";
     int baudRate = int.Parse(Environment.GetEnvironmentVariable("BAUD_RATE") ?? "9600");
     int dataBits = int.Parse(Environment.GetEnvironmentVariable("DATA_BITS") ?? "8");
+
 
     SerialPort serialPort = new SerialPort();
     serialPort.PortName = portName;
@@ -188,7 +226,32 @@ public class Program
         Console.WriteLine("Received EOT from Client.");
         Console.WriteLine("Transmission ended.");
         string allMessages = string.Join("\n", messageCollections);
-        Console.WriteLine("All Messages:\n" + allMessages);
+        // Console.WriteLine("All Messages:\n" + allMessages);
+        List<string> lines = [.. allMessages.Split("\n")];
+        List<string> header = [.. lines.Where(s => s[0].ToString() == "H")];
+        List<string> patients = [.. lines.Where(s => s[0].ToString() == "P")];
+        List<string> orders = [.. lines.Where(s => s[0].ToString() == "O")];
+        List<string> results = [.. lines.Where(s => s[0].ToString() == "R")];
+        List<string> termination = [.. lines.Where(s => s[0].ToString() == "L")];
+
+
+        var reconstructedHeader = ParseResultText(HeaderStructure!, header);
+        var reconstructedPatients = ParseResultText(PatientStructure!, patients);
+        var reconstructedOrders = ParseResultText(OrderStructure!, orders);
+        var reconstructedResults = ParseResultText(ResultStructure!, results);
+        var reconstructedTermination = ParseResultText(TerminationStructure!, termination);
+        JObject r = new JObject
+        {
+          {"Header", reconstructedHeader[0]},
+          {"Patient", reconstructedPatients[0]},
+          {"Order", reconstructedOrders[0]},
+          {"Result", reconstructedResults},
+          {"Termination", reconstructedTermination}
+        };
+
+        Log.Information("End of Transmition");
+        Log.Information(r.ToString(Formatting.Indented));
+        // Console.WriteLine(r.ToString(Formatting.Indented));
         Reset();
       }
       else
@@ -263,4 +326,57 @@ public class Program
       }
     }
   }
+  private static JObject ParseContentText(JArray structure, string line, string sep = "|")
+  {
+    var obj = new JObject();
+    string[] tokens = line.Split(sep);
+
+    int index = 0;
+    foreach (var field in structure)
+    {
+      JObject fieldObj = (JObject)field;
+      string key = fieldObj.Properties().First().Name;
+      if (key == "[NONE]")
+      {
+        continue;
+      }
+      JToken fieldDef = fieldObj[key];
+
+      if (fieldDef.Type == JTokenType.String) // simple field
+      {
+        obj[key] = index < tokens.Length ? tokens[index] : "";
+        index++;
+      }
+      else if (fieldDef.Type == JTokenType.Array) // nested array (like Universal Test ID)
+      {
+        string childLine = index < tokens.Length ? tokens[index] : "";
+        index++;
+
+        JArray childStructure = (JArray)fieldDef;
+        JObject childObj = ParseContentText(childStructure, childLine, "^");
+        obj[key] = childObj;
+      }
+      else if (fieldDef.Type == JTokenType.Object)
+      {
+        // nested object
+        string childLine = index < tokens.Length ? tokens[index] : "";
+        index++;
+
+        JObject childObj = ParseContentText(new JArray(fieldDef), childLine, "^");
+        obj[key] = childObj;
+      }
+    }
+
+    return obj;
+  }
+  private static JArray ParseResultText(JArray structure, List<string> lines, string sep = "|")
+  {
+    var arr = new JArray();
+    foreach (var line in lines)
+    {
+      arr.Add(ParseContentText(structure, line, sep));
+    }
+    return arr;
+  }
+
 }
