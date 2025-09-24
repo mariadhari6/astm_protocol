@@ -336,10 +336,6 @@ public class Program
     {
       JObject fieldObj = (JObject)field;
       string key = fieldObj.Properties().First().Name;
-      if (key == "[NONE]")
-      {
-        continue;
-      }
       JToken fieldDef = fieldObj[key];
 
       if (fieldDef.Type == JTokenType.String) // simple field
